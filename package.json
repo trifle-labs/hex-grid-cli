@@ -1,0 +1,36 @@
+{
+  "name": "hex-grid-cli",
+  "version": "1.0.0",
+  "description": "ASCII Hexagonal Grid Pretty Printer - utility for printing hex grids in CLI with TypeScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "tsc --noEmit",
+    "examples": "npm run build && node dist/examples.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "hex",
+    "hexagonal",
+    "grid",
+    "ascii",
+    "cli",
+    "terminal",
+    "hexgrid",
+    "ascii-art"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
