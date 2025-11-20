@@ -1,6 +1,6 @@
 {
   "name": "hex-grid-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ASCII Hexagonal Grid Pretty Printer - utility for printing hex grids in CLI with TypeScript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
