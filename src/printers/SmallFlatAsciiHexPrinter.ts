@@ -1,5 +1,5 @@
 import { HexOrientation } from '../HexOrientation';
-import { AsciiHexPrinter } from './AsciiHexPrinter';
+import { AsciiHexPrinter, VisualStyle } from './AsciiHexPrinter';
 
 export class SmallFlatAsciiHexPrinter extends AsciiHexPrinter {
   private readonly width = 9;
@@ -13,13 +13,27 @@ export class SmallFlatAsciiHexPrinter extends AsciiHexPrinter {
     '\\# YYY #/\n' +  // 27 - 36
     ' \\#_#_#/ ';     // 36 - 45
 
-  getHex(textLine1: string, textLine2: string, fillerChar: string): string {
-    let hex = SmallFlatAsciiHexPrinter.TEMPLATE;
-    const line1 = this.restrictToLength(textLine1, 3);
-    const line2 = this.restrictToLength(textLine2, 3);
-    hex = hex.replace('XXX', line1);
-    hex = hex.replace('YYY', line2);
-    return hex.replace(/#/g, fillerChar);
+  private static readonly MINIMAL_TEMPLATE = 
+    '   _ _   \n' +  // 0 - 9
+    ' /     \\ \n' +  // 9 - 18
+    '/       \\\n' +  // 18 - 27
+    '\\  XXX  /\n' +  // 27 - 36
+    ' \\ _ _ / ';     // 36 - 45
+
+  getHex(textLine1: string, textLine2: string, fillerChar: string, visualStyle: VisualStyle = 'default'): string {
+    if (visualStyle === 'minimal') {
+      let hex = SmallFlatAsciiHexPrinter.MINIMAL_TEMPLATE;
+      const line1 = this.restrictToLength(textLine1, 3);
+      hex = hex.replace('XXX', line1);
+      return hex;
+    } else {
+      let hex = SmallFlatAsciiHexPrinter.TEMPLATE;
+      const line1 = this.restrictToLength(textLine1, 3);
+      const line2 = this.restrictToLength(textLine2, 3);
+      hex = hex.replace('XXX', line1);
+      hex = hex.replace('YYY', line2);
+      return hex.replace(/#/g, fillerChar);
+    }
   }
 
   mapHexCoordsToCharCoords(q: number, r: number): number[] {

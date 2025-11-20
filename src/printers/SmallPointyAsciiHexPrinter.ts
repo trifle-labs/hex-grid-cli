@@ -1,5 +1,5 @@
 import { HexOrientation } from '../HexOrientation';
-import { AsciiHexPrinter } from './AsciiHexPrinter';
+import { AsciiHexPrinter, VisualStyle } from './AsciiHexPrinter';
 
 export class SmallPointyAsciiHexPrinter extends AsciiHexPrinter {
   private readonly width = 10;
@@ -16,13 +16,28 @@ export class SmallPointyAsciiHexPrinter extends AsciiHexPrinter {
     ' \\# # #/ \n' +  // 40 - 50
     '   \\#/   \n';   // 50 - 60
 
-  getHex(textLine1: string, textLine2: string, fillerChar: string): string {
-    let hex = SmallPointyAsciiHexPrinter.TEMPLATE;
-    const line1 = this.restrictToLength(textLine1, 3);
-    const line2 = this.restrictToLength(textLine2, 3);
-    hex = hex.replace('XXX', line1);
-    hex = hex.replace('YYY', line2);
-    return hex.replace(/#/g, fillerChar);
+  private static readonly MINIMAL_TEMPLATE =
+    '   / \\   \n' +  // 0 - 10
+    ' /     \\ \n' +  // 10 - 20
+    '|  XXX  |\n' +  // 20 - 30
+    '|       |\n' +  // 30 - 40
+    ' \\     / \n' +  // 40 - 50
+    '   \\ /   \n';   // 50 - 60
+
+  getHex(textLine1: string, textLine2: string, fillerChar: string, visualStyle: VisualStyle = 'default'): string {
+    if (visualStyle === 'minimal') {
+      let hex = SmallPointyAsciiHexPrinter.MINIMAL_TEMPLATE;
+      const line1 = this.restrictToLength(textLine1, 3);
+      hex = hex.replace('XXX', line1);
+      return hex;
+    } else {
+      let hex = SmallPointyAsciiHexPrinter.TEMPLATE;
+      const line1 = this.restrictToLength(textLine1, 3);
+      const line2 = this.restrictToLength(textLine2, 3);
+      hex = hex.replace('XXX', line1);
+      hex = hex.replace('YYY', line2);
+      return hex.replace(/#/g, fillerChar);
+    }
   }
 
   mapHexCoordsToCharCoords(q: number, r: number): number[] {

@@ -158,3 +158,69 @@ describe('AsciiBoard - Without Box', () => {
     expect(result).not.toContain('| =');
   });
 });
+
+describe('AsciiBoard - Minimal Visual Style', () => {
+  it('should render small flat hex with minimal style', () => {
+    const printer = new SmallFlatAsciiHexPrinter();
+    const board = new AsciiBoard(0, 0, 0, 0, printer, 'minimal');
+    board.addHex('HEX', '-W-', '#', 0, 0);
+    const result = board.prettyPrint(true);
+    expect(result).toContain('HEX');
+    expect(result).not.toContain('#');
+    expect(result).not.toContain('-W-');
+    expect(result).toContain('/     \\');
+    expect(result).toContain('\\ _ _ /');
+  });
+
+  it('should render small pointy hex with minimal style', () => {
+    const printer = new SmallPointyAsciiHexPrinter();
+    const board = new AsciiBoard(0, 0, 0, 0, printer, 'minimal');
+    board.addHex('HEX', '-W-', '#', 0, 0);
+    const result = board.prettyPrint(true);
+    expect(result).toContain('HEX');
+    expect(result).not.toContain('#');
+    expect(result).not.toContain('-W-');
+    expect(result).toContain('/     \\');
+    expect(result).toContain('\\     /');
+  });
+
+  it('should render large flat hex with minimal style', () => {
+    const printer = new LargeFlatAsciiHexPrinter();
+    const board = new AsciiBoard(0, 0, 0, 0, printer, 'minimal');
+    board.addHex('HEX001', '-WARLOC-', '#', 0, 0);
+    const result = board.prettyPrint(true);
+    expect(result).toContain('HEX001');
+    expect(result).not.toContain('#');
+    expect(result).not.toContain('-WARLOC');
+    expect(result).toContain('/       \\');
+    expect(result).toContain('\\ _ _ _ /');
+  });
+
+  it('should render large pointy hex with minimal style', () => {
+    const printer = new LargePointyAsciiHexPrinter();
+    const board = new AsciiBoard(0, 0, 0, 0, printer, 'minimal');
+    board.addHex('HEX001', '-WARLOC-', '#', 0, 0);
+    const result = board.prettyPrint(true);
+    expect(result).toContain('HEX001');
+    expect(result).not.toContain('#');
+    expect(result).not.toContain('-WARLOC');
+    expect(result).toContain('/     \\');
+    expect(result).toContain('\\     /');
+  });
+
+  it('should render multiple hexes with minimal style', () => {
+    const printer = new SmallFlatAsciiHexPrinter();
+    const board = new AsciiBoard(0, 2, 0, 0, printer, 'minimal');
+    board.addHex('HX1', '-B-', '#', 0, 0);
+    board.addHex('HX2', '-W-', '+', 1, 0);
+    board.addHex('HX3', '-W-', '-', 2, 0);
+    const result = board.prettyPrint(true);
+    expect(result).toContain('HX1');
+    expect(result).toContain('HX2');
+    expect(result).toContain('HX3');
+    expect(result).not.toContain('#');
+    expect(result).not.toContain('+');
+    expect(result).not.toContain('-B-');
+    expect(result).not.toContain('-W-');
+  });
+});

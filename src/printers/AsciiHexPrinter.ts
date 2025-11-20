@@ -1,10 +1,12 @@
 import { HexOrientation } from '../HexOrientation';
 
+export type VisualStyle = 'default' | 'minimal';
+
 export abstract class AsciiHexPrinter {
   /**
    * Returns the hex
    */
-  abstract getHex(textLine1: string, textLine2: string, fillerChar: string): string;
+  abstract getHex(textLine1: string, textLine2: string, fillerChar: string, visualStyle?: VisualStyle): string;
 
   /**
    * Viewing the board as a grid of hexes. Each hex has a bounding box. Map top-left of bounding box given by hex
