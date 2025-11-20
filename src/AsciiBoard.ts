@@ -1,6 +1,6 @@
 import { CharGrid } from './CharGrid';
 import { HexOrientation } from './HexOrientation';
-import { AsciiHexPrinter } from './printers/AsciiHexPrinter';
+import { AsciiHexPrinter, VisualStyle } from './printers/AsciiHexPrinter';
 
 /**
  * Description of a Ascii hex map.
@@ -47,17 +47,20 @@ import { AsciiHexPrinter } from './printers/AsciiHexPrinter';
  * @param minR Minimum R coordinate
  * @param maxR Maximum R coordinate
  * @param printer Reference to the hex printer used
+ * @param visualStyle Optional visual style (default or minimal)
  */
 export class AsciiBoard {
   private readonly width: number;
   private readonly height: number;
   private readonly printer: AsciiHexPrinter;
   private readonly grid: CharGrid;
+  private readonly visualStyle: VisualStyle;
 
-  constructor(minQ: number, maxQ: number, minR: number, maxR: number, printer: AsciiHexPrinter) {
+  constructor(minQ: number, maxQ: number, minR: number, maxR: number, printer: AsciiHexPrinter, visualStyle: VisualStyle = 'default') {
     this.width = maxQ - minQ + 1;
     this.height = maxR - minR + 1;
     this.printer = printer;
+    this.visualStyle = visualStyle;
     this.grid = this.createGrid();
   }
 
@@ -76,7 +79,7 @@ export class AsciiBoard {
    * @param hexR R coordinate for the hex in the hex grid.
    */
   addHex(textLine1: string, textLine2: string, fillerChar: string, hexQ: number, hexR: number): void {
-    const hex = this.printer.getHex(textLine1, textLine2, fillerChar);
+    const hex = this.printer.getHex(textLine1, textLine2, fillerChar, this.visualStyle);
     const charCoordinates = this.printer.mapHexCoordsToCharCoords(hexQ, hexR);
     const lines = hex.split('\n').filter(line => line !== '');
     

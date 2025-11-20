@@ -36,6 +36,37 @@ hex-grid-cli --demo
 hex-grid-cli --type small-pointy --demo
 hex-grid-cli --type large-flat --demo
 hex-grid-cli --type large-pointy --demo
+
+# Run demo with minimal visual style
+hex-grid-cli --style minimal --demo
+hex-grid-cli --type large-pointy --style minimal --demo
+```
+
+### Visual Styles
+
+The library supports two visual styles:
+
+- **default**: Shows hex borders filled with the filler character and displays two lines of text
+- **minimal**: Shows clean hex borders without filler characters and displays only one line of text
+
+Example comparison:
+
+Default style:
+```
+   _ _              
+ /E E E\          
+/E HX0 E\      
+\E -A- E/         
+ \E_E_E/
+```
+
+Minimal style:
+```
+   _ _              
+ /     \          
+/       \      
+\  HX0  /         
+ \ _ _ /
 ```
 
 ### Programmatic Usage
@@ -70,6 +101,40 @@ Output:
 |               /• HX4 •\ |
 |               \• -D- •/ |
 |                \•_•_•/  |
+|                         |
+| = = = = = = = = = = = = |
+```
+
+#### Using Minimal Style
+
+```typescript
+import { AsciiBoard, SmallFlatAsciiHexPrinter } from 'hex-grid-cli';
+
+const printer = new SmallFlatAsciiHexPrinter();
+const board = new AsciiBoard(0, 2, 0, 1, printer, 'minimal');
+board.addHex('HX1', '-A-', '#', 0, 0);
+board.addHex('HX2', '-B-', '+', 1, 0);
+board.addHex('HX3', '-C-', '-', 2, 0);
+board.addHex('HX4', '-D-', '•', 2, 1);
+console.log(board.prettyPrint(true));
+```
+
+Output:
+```
+| = = = = = = = = = = = = |
+|    _ _                  |
+|  /     \                |
+| /       \ _ _           |
+| \  HX1  /     \         |
+|  \ _ _ /       \ _ _    |
+|        \  HX2  /     \  |
+|         \ _ _ /       \ |
+|               \  HX3  / |
+|                \ _ _ /  |
+|                /     \  |
+|               /       \ |
+|               \  HX4  / |
+|                \ _ _ /  |
 |                         |
 | = = = = = = = = = = = = |
 ```
@@ -201,15 +266,18 @@ npm run build && node dist/examples.js
 
 ### AsciiBoard
 
-Constructor: `new AsciiBoard(minQ: number, maxQ: number, minR: number, maxR: number, printer: AsciiHexPrinter)`
+Constructor: `new AsciiBoard(minQ: number, maxQ: number, minR: number, maxR: number, printer: AsciiHexPrinter, visualStyle?: VisualStyle)`
 
 - `minQ`, `maxQ`: Minimum and maximum Q coordinates
 - `minR`, `maxR`: Minimum and maximum R coordinates  
 - `printer`: An instance of an `AsciiHexPrinter` implementation
+- `visualStyle`: Optional visual style ('default' or 'minimal', defaults to 'default')
 
 Methods:
 - `addHex(textLine1: string, textLine2: string, fillerChar: string, hexQ: number, hexR: number): void`
   - Add a hex at the specified coordinates
+  - In minimal style, only `textLine1` is displayed
+  - The `fillerChar` is ignored in minimal style
 - `prettyPrint(wrapInBox: boolean): string`
   - Render the board as a string, optionally wrapped in a box
 
@@ -220,6 +288,13 @@ Base abstract class for hex printers. Available implementations:
 - `SmallPointyAsciiHexPrinter` - Small pointy hexes
 - `LargeFlatAsciiHexPrinter` - Large flat hexes
 - `LargePointyAsciiHexPrinter` - Large pointy hexes
+
+### VisualStyle
+
+Type definition for visual styles: `'default' | 'minimal'`
+
+- **'default'**: Shows hex borders filled with the filler character and displays two lines of text
+- **'minimal'**: Shows clean hex borders without filler characters and displays only one line of text
 
 ## Credit
 

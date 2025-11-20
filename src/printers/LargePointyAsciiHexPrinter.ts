@@ -1,5 +1,5 @@
 import { HexOrientation } from '../HexOrientation';
-import { AsciiHexPrinter } from './AsciiHexPrinter';
+import { AsciiHexPrinter, VisualStyle } from './AsciiHexPrinter';
 
 export class LargePointyAsciiHexPrinter extends AsciiHexPrinter {
   private readonly width = 14;
@@ -19,13 +19,31 @@ export class LargePointyAsciiHexPrinter extends AsciiHexPrinter {
     '   \\# # #/   \n' +
     '     \\#/     \n';
 
-  getHex(textLine1: string, textLine2: string, fillerChar: string): string {
-    let hex = LargePointyAsciiHexPrinter.TEMPLATE;
-    const line1 = this.restrictToLength(textLine1, 7);
-    const line2 = this.restrictToLength(textLine2, 7);
-    hex = hex.replace('XXXXXXX', line1);
-    hex = hex.replace('YYYYYYY', line2);
-    return hex.replace(/#/g, fillerChar);
+  private static readonly MINIMAL_TEMPLATE =
+    '     / \\     \n' +  // 0 - 13
+    '   /     \\   \n' +
+    ' /         \\ \n' +
+    '|  XXXXXXX  |\n' +
+    '|           |\n' +
+    '|           |\n' +
+    ' \\         / \n' +
+    '   \\     /   \n' +
+    '     \\ /     \n';
+
+  getHex(textLine1: string, textLine2: string, fillerChar: string, visualStyle: VisualStyle = 'default'): string {
+    if (visualStyle === 'minimal') {
+      let hex = LargePointyAsciiHexPrinter.MINIMAL_TEMPLATE;
+      const line1 = this.restrictToLength(textLine1, 7);
+      hex = hex.replace('XXXXXXX', line1);
+      return hex;
+    } else {
+      let hex = LargePointyAsciiHexPrinter.TEMPLATE;
+      const line1 = this.restrictToLength(textLine1, 7);
+      const line2 = this.restrictToLength(textLine2, 7);
+      hex = hex.replace('XXXXXXX', line1);
+      hex = hex.replace('YYYYYYY', line2);
+      return hex.replace(/#/g, fillerChar);
+    }
   }
 
   mapHexCoordsToCharCoords(q: number, r: number): number[] {
