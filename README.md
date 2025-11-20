@@ -21,7 +21,26 @@ npm install hex-grid-cli
 
 ## Usage
 
-### Basic Example
+### Command Line Interface
+
+After installation, you can use the CLI to generate demo hex grids:
+
+```bash
+# Show help
+hex-grid-cli --help
+
+# Run demo with default small-flat hexes
+hex-grid-cli --demo
+
+# Run demo with different hex types
+hex-grid-cli --type small-pointy --demo
+hex-grid-cli --type large-flat --demo
+hex-grid-cli --type large-pointy --demo
+```
+
+### Programmatic Usage
+
+#### Basic Example
 
 ```typescript
 import { AsciiBoard, SmallFlatAsciiHexPrinter } from 'hex-grid-cli';
